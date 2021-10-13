@@ -8,26 +8,44 @@ public class Complejo {
 	private DoubleProperty real = new SimpleDoubleProperty();
 	private DoubleProperty imaginario = new SimpleDoubleProperty();
 	
-	public Double getReal() {
-		return real.get();
+
+	
+
+
+	public final DoubleProperty realProperty() {
+		return this.real;
 	}
+	
 
 
-	public void setReal(Double real) {
-		this.real.set(real);;
+	public final double getReal() {
+		return this.realProperty().get();
 	}
+	
 
 
-	public Double getImaginario() {
-		return imaginario.get();
+	public final void setReal(final double real) {
+		this.realProperty().set(real);
 	}
+	
 
 
-	public void setImaginario(Double imaginario) {
-		this.imaginario.set(imaginario);
+	public final DoubleProperty imaginarioProperty() {
+		return this.imaginario;
 	}
+	
 
 
+	public final double getImaginario() {
+		return this.imaginarioProperty().get();
+	}
+	
+
+
+	public final void setImaginario(final double imaginario) {
+		this.imaginarioProperty().set(imaginario);
+	}
+	
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
