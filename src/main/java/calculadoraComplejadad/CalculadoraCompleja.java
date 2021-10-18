@@ -93,7 +93,7 @@ public class CalculadoraCompleja extends Application {
 		primaryStage.show();
 		
 		
-		real1.textProperty().bindBidirectional
+		//real1.textProperty().bindBidirectional
 		
 		
 	}
