@@ -3,8 +3,10 @@ package calculadoraComplejadad;
 import comboBox.Alumno;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
@@ -29,14 +31,14 @@ public class CalculadoraCompleja extends Application {
 	private TextField real2;
 	private TextField realTotal;
 	
-	private IntegerProperty real1Property = new SimpleIntegerProperty();
-	private IntegerProperty imaginario1Property = new SimpleIntegerProperty();
+	private DoubleProperty real1Property = new SimpleDoubleProperty();
+	private DoubleProperty imaginario1Property = new SimpleDoubleProperty();
 	
-	private IntegerProperty real2Property = new SimpleIntegerProperty();
-	private IntegerProperty imaginario2Property = new SimpleIntegerProperty();
+	private DoubleProperty real2Property = new SimpleDoubleProperty();
+	private DoubleProperty imaginario2Property = new SimpleDoubleProperty();
 	
-	private IntegerProperty realTotalProperty = new SimpleIntegerProperty();
-	private IntegerProperty imaginarioTotalProperty = new SimpleIntegerProperty();
+	private DoubleProperty realTotalProperty = new SimpleDoubleProperty();
+	private DoubleProperty imaginarioTotalProperty = new SimpleDoubleProperty();
 	
 	private TextField imaginario1;
 	private TextField imaginario2;
@@ -56,7 +58,6 @@ public class CalculadoraCompleja extends Application {
 
 		simbolo = new ComboBox<String>();
 		simbolo.getItems().addAll("+", "-", "*", "/");
-		simbolo.getSelectionModel().selectFirst();
 
 		real1 = new TextField();
 		real1.setPrefWidth(50);
@@ -66,7 +67,7 @@ public class CalculadoraCompleja extends Application {
 
 		realTotal = new TextField();
 		realTotal.setPrefWidth(50);
-		realTotal.setEditable(false);
+		realTotal.setDisable(true);
 
 		imaginario1 = new TextField();
 		imaginario1.setPrefWidth(50);
@@ -76,7 +77,7 @@ public class CalculadoraCompleja extends Application {
 
 		imaginarioTotal = new TextField();
 		imaginarioTotal.setPrefWidth(50);
-		imaginarioTotal.setEditable(false);
+		imaginarioTotal.setDisable(true);
 
 		separador = new Separator();
 
@@ -84,7 +85,6 @@ public class CalculadoraCompleja extends Application {
 		simbolo2 = new Label("+");
 		simboloTotal = new Label("+");
 		
-	
 
 		VBox combo = new VBox(5, simbolo);
 		combo.setAlignment(Pos.CENTER);
@@ -146,8 +146,14 @@ public class CalculadoraCompleja extends Application {
 				simbolo1.textProperty().setValue("*");
 				simbolo2.textProperty().setValue("*");
 				simboloTotal.textProperty().setValue("*");
+				//real1Property.multiply(real2Property)
 				
-				System.out.println("hols");
+				//real1Property.multiply(imaginario2Property)
+				//imaginario1Property.multiply(real1Property)
+				//imaginario1Property.multiply(imaginario2Property)
+				
+				realTotalProperty.bind(real1Property.multiply(real2Property));
+				imaginarioTotalProperty.bind((real1Property.multiply(imaginario2Property)).add(imaginario1Property.multiply(real1Property)).add(imaginario1Property.multiply(imaginario2Property)));
 				break;
 			case "/":
 				simbolo1.textProperty().setValue("/");
