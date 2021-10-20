@@ -1,6 +1,6 @@
 package calculadoraComplejadad;
 
-import comboBox.Alumno;
+
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -50,8 +50,9 @@ public class CalculadoraCompleja extends Application {
 	private Label simbolo2;
 	private Label simboloTotal;
 	
-
-	
+	private Complejo complejo1;
+	private Complejo complejo2;
+	private Complejo complejoResultado;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -85,6 +86,9 @@ public class CalculadoraCompleja extends Application {
 		simbolo2 = new Label("+");
 		simboloTotal = new Label("+");
 		
+		complejo1 = new Complejo();
+		complejo2 = new Complejo();
+		complejoResultado = new Complejo();
 
 		VBox combo = new VBox(5, simbolo);
 		combo.setAlignment(Pos.CENTER);
@@ -112,11 +116,12 @@ public class CalculadoraCompleja extends Application {
 		//bindings
 		
 		//real
-		Bindings.bindBidirectional(real1.textProperty(), real1Property,  new NumberStringConverter());
-		Bindings.bindBidirectional(real2.textProperty(), real2Property,  new NumberStringConverter());
+		Bindings.bindBidirectional(real1.textProperty(), complejo1.realProperty(),  new NumberStringConverter());
+		Bindings.bindBidirectional(real2.textProperty(), complejo2.realProperty(),  new NumberStringConverter());
 		//imaginario
-		Bindings.bindBidirectional(imaginario1.textProperty(), imaginario1Property,  new NumberStringConverter());
-		Bindings.bindBidirectional(imaginario2.textProperty(), imaginario2Property,  new NumberStringConverter());
+		Bindings.bindBidirectional(imaginario1.textProperty(), complejo1.imaginarioProperty(),  new NumberStringConverter());
+		Bindings.bindBidirectional(imaginario2.textProperty(), complejo2.imaginarioProperty(),  new NumberStringConverter());
+		
 		
 		realTotal.textProperty().bind(realTotalProperty.asString());
 		imaginarioTotal.textProperty().bind(imaginarioTotalProperty.asString());
@@ -130,6 +135,7 @@ public class CalculadoraCompleja extends Application {
 				simbolo1.textProperty().setValue("+");
 				simbolo2.textProperty().setValue("+");
 				simboloTotal.textProperty().setValue("+");
+				System.out.println(complejo1.getImaginario() + " "+ complejo1.getReal());
 				
 				realTotalProperty.bind(real1Property.add(real2Property));
 				imaginarioTotalProperty.bind(imaginario1Property.add(imaginario2Property));
@@ -152,8 +158,6 @@ public class CalculadoraCompleja extends Application {
 				//imaginario1Property.multiply(real1Property)
 				//imaginario1Property.multiply(imaginario2Property)
 				
-				realTotalProperty.bind(real1Property.multiply(real2Property));
-				imaginarioTotalProperty.bind((real1Property.multiply(imaginario2Property)).add(imaginario1Property.multiply(real1Property)).add(imaginario1Property.multiply(imaginario2Property)));
 				break;
 			case "/":
 				simbolo1.textProperty().setValue("/");
