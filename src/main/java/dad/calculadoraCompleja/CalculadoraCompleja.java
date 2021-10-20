@@ -2,6 +2,7 @@ package dad.calculadoraCompleja;
 
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringExpression;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -116,6 +117,8 @@ public class CalculadoraCompleja extends Application {
 
 		realTotal.textProperty().bind(complejoResultado.imaginarioProperty().asString());
 		imaginarioTotal.textProperty().bind(complejoResultado.realProperty().asString());
+		
+		
 
 		seleccionado.bind(simbolo.getSelectionModel().selectedItemProperty());
 		seleccionado.addListener((o, ov, nv) -> {
