@@ -1,6 +1,5 @@
 package calculadoraComplejadad;
 
-
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -30,16 +29,7 @@ public class CalculadoraCompleja extends Application {
 	private TextField real1;
 	private TextField real2;
 	private TextField realTotal;
-	
-	private DoubleProperty real1Property = new SimpleDoubleProperty();
-	private DoubleProperty imaginario1Property = new SimpleDoubleProperty();
-	
-	private DoubleProperty real2Property = new SimpleDoubleProperty();
-	private DoubleProperty imaginario2Property = new SimpleDoubleProperty();
-	
-	private DoubleProperty realTotalProperty = new SimpleDoubleProperty();
-	private DoubleProperty imaginarioTotalProperty = new SimpleDoubleProperty();
-	
+
 	private TextField imaginario1;
 	private TextField imaginario2;
 	private TextField imaginarioTotal;
@@ -49,7 +39,7 @@ public class CalculadoraCompleja extends Application {
 	private Label simbolo1;
 	private Label simbolo2;
 	private Label simboloTotal;
-	
+
 	private Complejo complejo1;
 	private Complejo complejo2;
 	private Complejo complejoResultado;
@@ -85,7 +75,7 @@ public class CalculadoraCompleja extends Application {
 		simbolo1 = new Label("+");
 		simbolo2 = new Label("+");
 		simboloTotal = new Label("+");
-		
+
 		complejo1 = new Complejo();
 		complejo2 = new Complejo();
 		complejoResultado = new Complejo();
@@ -112,91 +102,70 @@ public class CalculadoraCompleja extends Application {
 		primaryStage.setTitle("Calculadora Compleja");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		
-		//bindings
-		
-		//real
-		Bindings.bindBidirectional(real1.textProperty(), complejo1.realProperty(),  new NumberStringConverter());
-		Bindings.bindBidirectional(real2.textProperty(), complejo2.realProperty(),  new NumberStringConverter());
-		//imaginario
-		Bindings.bindBidirectional(imaginario1.textProperty(), complejo1.imaginarioProperty(),  new NumberStringConverter());
-		Bindings.bindBidirectional(imaginario2.textProperty(), complejo2.imaginarioProperty(),  new NumberStringConverter());
-		
-		
-		realTotal.textProperty().bind(realTotalProperty.asString());
-		imaginarioTotal.textProperty().bind(imaginarioTotalProperty.asString());
-		
-		
-		
+
+		// bindings
+
+		// real
+		Bindings.bindBidirectional(real1.textProperty(), complejo1.realProperty(), new NumberStringConverter());
+		Bindings.bindBidirectional(real2.textProperty(), complejo2.realProperty(), new NumberStringConverter());
+		// imaginario
+		Bindings.bindBidirectional(imaginario1.textProperty(), complejo1.imaginarioProperty(),
+				new NumberStringConverter());
+		Bindings.bindBidirectional(imaginario2.textProperty(), complejo2.imaginarioProperty(),
+				new NumberStringConverter());
+
+		realTotal.textProperty().bind(complejoResultado.imaginarioProperty().asString());
+		imaginarioTotal.textProperty().bind(complejoResultado.realProperty().asString());
+
 		seleccionado.bind(simbolo.getSelectionModel().selectedItemProperty());
 		seleccionado.addListener((o, ov, nv) -> {
 			switch (nv) {
 			case "+":
-				simbolo1.textProperty().setValue("+");
-				simbolo2.textProperty().setValue("+");
-				simboloTotal.textProperty().setValue("+");
-				System.out.println(complejo1.getImaginario() + " "+ complejo1.getReal());
-				
-				realTotalProperty.bind(real1Property.add(real2Property));
-				imaginarioTotalProperty.bind(imaginario1Property.add(imaginario2Property));
+
+				complejoResultado.imaginarioProperty().bind(complejo1.realProperty().add(complejo2.realProperty()));
+				complejoResultado.realProperty()
+						.bind(complejo1.imaginarioProperty().add(complejo2.imaginarioProperty()));
+
 				break;
 			case "-":
-				simbolo1.textProperty().setValue("-");
-				simbolo2.textProperty().setValue("-");
-				simboloTotal.textProperty().setValue("-");
-				
-				realTotalProperty.bind(real1Property.subtract(real2Property));
-				imaginarioTotalProperty.bind(imaginario1Property.subtract(imaginario2Property));
+
+				complejoResultado.imaginarioProperty()
+						.bind(complejo1.realProperty().subtract(complejo2.realProperty()));
+				complejoResultado.realProperty()
+						.bind(complejo1.imaginarioProperty().subtract(complejo2.imaginarioProperty()));
+
 				break;
 			case "*":
-				simbolo1.textProperty().setValue("*");
-				simbolo2.textProperty().setValue("*");
-				simboloTotal.textProperty().setValue("*");
-				//real1Property.multiply(real2Property)
-				
-				//real1Property.multiply(imaginario2Property)
-				//imaginario1Property.multiply(real1Property)
-				//imaginario1Property.multiply(imaginario2Property)
-				
+
+				complejoResultado.imaginarioProperty()
+						.bind((complejo1.realProperty().multiply(complejo2.realProperty()))
+								.subtract(complejo1.imaginarioProperty().multiply(complejo2.imaginarioProperty())));
+				complejoResultado.realProperty()
+						.bind((complejo1.realProperty().multiply(complejo2.imaginarioProperty()))
+								.add(complejo1.imaginarioProperty().multiply(complejo2.realProperty())));
+
 				break;
 			case "/":
-				simbolo1.textProperty().setValue("/");
-				simbolo2.textProperty().setValue("/");
-				simboloTotal.textProperty().setValue("/");
-				
-				System.out.println("hols");
+
+				complejoResultado.imaginarioProperty()
+						.bind((complejo1.realProperty().multiply(complejo2.realProperty()))
+								.add(complejo1.imaginarioProperty().multiply(complejo2.imaginarioProperty()))
+								.divide(complejo2.realProperty().multiply(complejo2.realProperty())
+										.add(complejo2.imaginarioProperty().multiply(complejo2.imaginarioProperty()))));
+				complejoResultado.realProperty()
+						.bind((complejo1.imaginarioProperty().multiply(complejo2.realProperty()))
+								.subtract(complejo1.realProperty().multiply(complejo2.imaginarioProperty()))
+								.divide(complejo2.realProperty().multiply(complejo2.realProperty())
+										.add(complejo2.imaginarioProperty().multiply(complejo2.imaginarioProperty()))));
+
 				break;
 
 			default:
 				break;
 			}
 		});
-		
-		
-		
-/*
-		
-		//System.out.println(simbolo.getValue());
-		switch (simbolo.getValue()) {
-		case "+":
-			
-			realTotalProperty.bind(real1Property.add(real2Property));
-			imaginarioTotalProperty.bind(imaginario1Property.add(imaginario2Property));
-			break;
-		case "-":
-			System.out.println("hols");
-			break;
-		case "*":
-			System.out.println("hols");
-			break;
-		case "/":
-			System.out.println("hols");
-			break;
 
-		default:
-			break;
-		}
-*/
+		
 	}
 
 	public static void main(String[] args) {
